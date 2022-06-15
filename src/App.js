@@ -1,5 +1,6 @@
 import React from "react";
-import "./App.css";
+import { Switch, Route } from 'react-router-dom'
+
 import Header from "./component/Header";
 import Footer from "./component/Footer";
 import Main from "./container/Main";
@@ -9,8 +10,10 @@ function App() {
     return (
         <>
             <Header />
-            <Main />
-            {/* <Shop /> */}
+            <Switch>
+                <Route path="/" exact component={Main} />
+                <Route path="/shop" exact component={Shop} />
+            </Switch>
             <Footer />
         </>
     );

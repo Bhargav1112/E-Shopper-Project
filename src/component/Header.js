@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from 'react-router-dom'
 
 function Header(props) {
     return (
@@ -180,18 +181,18 @@ function Header(props) {
                                 id="navbarCollapse"
                             >
                                 <div className="navbar-nav mr-auto py-0">
-                                    <a
-                                        href="index.html"
+                                    <NavLink
+                                        to="/"
                                         className="nav-item nav-link active"
                                     >
                                         Home
-                                    </a>
-                                    <a
-                                        href="shop.html"
+                                    </NavLink>
+                                    <NavLink
+                                        to="/shop"
                                         className="nav-item nav-link"
                                     >
                                         Shop
-                                    </a>
+                                    </NavLink>
                                     <a
                                         href="detail.html"
                                         className="nav-item nav-link"
