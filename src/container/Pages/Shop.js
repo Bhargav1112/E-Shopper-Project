@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Shop(props) {
     return (
@@ -13,7 +14,7 @@ function Shop(props) {
                     </h1>
                     <div className="d-inline-flex">
                         <p className="m-0">
-                            <a href>Home</a>
+                            <Link to={"/"}>Home</Link>
                         </p>
                         <p className="m-0 px-2">-</p>
                         <p className="m-0">Shop</p>
