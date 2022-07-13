@@ -1,7 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProductItem from "../ProductItem";
+
+const DUMMY_PRODUCTS = [
+    {
+        id: "p1",
+        img: "img/product-1.jpg",
+        price: "$123.00",
+        subPrice: "$150.00",
+        name: "One peice",
+    },
+    {
+        id: "p2",
+        img: "img/product-2.jpg",
+        price: "$123.00",
+        subPrice: "$150.00",
+        name: "Jacket",
+    },
+    {
+        id: "p3",
+        img: "img/product-3.jpg",
+        price: "$123.00",
+        subPrice: "$150.00",
+        name: "Lather Jacket",
+    },
+    {
+        id: "p4",
+        img: "img/product-4.jpg",
+        price: "$123.00",
+        subPrice: "$150.00",
+        name: "Women Proffetional",
+    },
+    {
+        id: "p5",
+        img: "img/product-5.jpg",
+        price: "$123.00",
+        subPrice: "$150.00",
+        name: "Colorful Stylish T-Shirt",
+    },
+    {
+        id: "p6",
+        img: "img/product-6.jpg",
+        price: "$200.00",
+        subPrice: "$250.00",
+        name: "Blazer",
+    },
+    {
+        id: "p7",
+        img: "img/product-7.jpg",
+        price: "$150.00",
+        subPrice: "$200.00",
+        name: "Women Full lenth Coat",
+    },
+    {
+        id: "p8",
+        img: "img/product-8.jpg",
+        price: "$100.00",
+        subPrice: "$160.00",
+        name: "Childeren shirt",
+    },
+    {
+        id: "p9",
+        img: "img/product-1.jpg",
+        price: "$125.00",
+        subPrice: "$170.00",
+        name: "Colorful Stylish Shirt",
+    },
+];
+
+const sortData = (data, type) => {
+    return data.sort((a, b) => {
+        if (type === "Latest") {
+            return a.id > b.id ? 1 : -1;
+        } else if (type === "Popularity") {
+            return a.id < b.id ? 1 : -1;
+        }
+    });
+};
 
 function Shop(props) {
+    const [productData, setProductData] = useState([]);
+    const [state, setState] = useState(false);
+
+    useEffect(() => {
+        setProductData(DUMMY_PRODUCTS);
+    }, []);
+
+    const searchHandler = (event) => {
+        const enteredValue = event.target.value;
+        const searchedData = DUMMY_PRODUCTS.filter(
+            (item) =>
+                item.name.toLowerCase().includes(enteredValue.toLowerCase()) ||
+                item.price.toString().includes(enteredValue)
+        );
+        setProductData(searchedData);
+    };
+
+    const sortHandler = (event) => {
+        const selectedValue = event.target.value;
+        const sortedData = sortData(productData, selectedValue);
+        setProductData(sortedData);
+        setState((prevstate) => !prevstate);
+    };
     return (
         <>
             <div className="container-fluid bg-secondary mb-5">
@@ -128,225 +228,18 @@ function Shop(props) {
                                 </div>
                             </form>
                         </div>
-                        <div className="border-bottom mb-4 pb-4">
-                            <h5 className="font-weight-semi-bold mb-4">
-                                Filter by color
-                            </h5>
-                            <form>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        defaultChecked
-                                        id="color-all"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="price-all"
-                                    >
-                                        All Color
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        1000
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="color-1"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="color-1"
-                                    >
-                                        Black
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        150
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="color-2"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="color-2"
-                                    >
-                                        White
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        295
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="color-3"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="color-3"
-                                    >
-                                        Red
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        246
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="color-4"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="color-4"
-                                    >
-                                        Blue
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        145
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="color-5"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="color-5"
-                                    >
-                                        Green
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        168
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="mb-5">
-                            <h5 className="font-weight-semi-bold mb-4">
-                                Filter by size
-                            </h5>
-                            <form>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        defaultChecked
-                                        id="size-all"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-all"
-                                    >
-                                        All Size
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        1000
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="size-1"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-1"
-                                    >
-                                        XS
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        150
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="size-2"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-2"
-                                    >
-                                        S
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        295
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="size-3"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-3"
-                                    >
-                                        M
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        246
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="size-4"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-4"
-                                    >
-                                        L
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        145
-                                    </span>
-                                </div>
-                                <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                    <input
-                                        type="checkbox"
-                                        className="custom-control-input"
-                                        id="size-5"
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor="size-5"
-                                    >
-                                        XL
-                                    </label>
-                                    <span className="badge border font-weight-normal">
-                                        168
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                     <div className="col-lg-9 col-md-12">
                         <div className="row pb-3">
                             <div className="col-12 pb-1">
                                 <div className="d-flex align-items-center justify-content-between mb-4">
-                                    <form action>
+                                    <form className="d-flex justify-content-between">
                                         <div className="input-group">
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Search by name"
+                                                onChange={searchHandler}
                                             />
                                             <div className="input-group-append">
                                                 <span className="input-group-text bg-transparent text-primary">
@@ -354,386 +247,41 @@ function Shop(props) {
                                                 </span>
                                             </div>
                                         </div>
+                                        <div className="input-group ms-auto">
+                                            <label htmlFor="sort">
+                                                Sort by:
+                                            </label>
+                                            <select
+                                                id="sort"
+                                                onChange={sortHandler}
+                                            >
+                                                <option value="">
+                                                    --Select--
+                                                </option>
+                                                <option value="Latest">
+                                                    Latest
+                                                </option>
+                                                <option value="Popularity">
+                                                    Popularity
+                                                </option>
+                                                <option value="Best Rating">
+                                                    Best Rating
+                                                </option>
+                                            </select>
+                                        </div>
                                     </form>
-                                    <div className="dropdown ml-4">
-                                        <button
-                                            className="btn border dropdown-toggle"
-                                            type="button"
-                                            id="triggerId"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                        >
-                                            Sort by
-                                        </button>
-                                        <div
-                                            className="dropdown-menu dropdown-menu-right"
-                                            aria-labelledby="triggerId"
-                                        >
-                                            <a
-                                                className="dropdown-item"
-                                                href="#"
-                                            >
-                                                Latest
-                                            </a>
-                                            <a
-                                                className="dropdown-item"
-                                                href="#"
-                                            >
-                                                Popularity
-                                            </a>
-                                            <a
-                                                className="dropdown-item"
-                                                href="#"
-                                            >
-                                                Best Rating
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-1.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-2.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-3.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-4.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-5.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-6.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-7.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-8.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6 col-sm-12 pb-1">
-                                <div className="card product-item border-0 mb-4">
-                                    <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                        <img
-                                            className="img-fluid w-100"
-                                            src="img/product-1.jpg"
-                                            alt
-                                        />
-                                    </div>
-                                    <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 className="text-truncate mb-3">
-                                            Colorful Stylish Shirt
-                                        </h6>
-                                        <div className="d-flex justify-content-center">
-                                            <h6>$123.00</h6>
-                                            <h6 className="text-muted ml-2">
-                                                <del>$123.00</del>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-between bg-light border">
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-eye text-primary mr-1" />
-                                            View Detail
-                                        </a>
-                                        <a
-                                            href
-                                            className="btn btn-sm text-dark p-0"
-                                        >
-                                            <i className="fas fa-shopping-cart text-primary mr-1" />
-                                            Add To Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            {productData.map((product) => (
+                                <ProductItem
+                                    key={product.id}
+                                    id={product.id}
+                                    img={product.img}
+                                    name={product.name}
+                                    price={product.price}
+                                    subPrice={product.subPrice}
+                                />
+                            ))}
                             <div className="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                     <ul className="pagination justify-content-center mb-3">
