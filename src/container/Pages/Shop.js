@@ -1,94 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductItem from "../ProductItem";
-
-const DUMMY_PRODUCTS = [
-    {
-        id: "p1",
-        img: "img/product-1.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
-        name: "One peice",
-    },
-    {
-        id: "p2",
-        img: "img/product-2.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
-        name: "Jacket",
-    },
-    {
-        id: "p3",
-        img: "img/product-3.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
-        name: "Lather Jacket",
-    },
-    {
-        id: "p4",
-        img: "img/product-4.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
-        name: "Women Proffetional",
-    },
-    {
-        id: "p5",
-        img: "img/product-5.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
-        name: "Colorful Stylish T-Shirt",
-    },
-    {
-        id: "p6",
-        img: "img/product-6.jpg",
-        price: "$200.00",
-        subPrice: "$250.00",
-        name: "Blazer",
-    },
-    {
-        id: "p7",
-        img: "img/product-7.jpg",
-        price: "$150.00",
-        subPrice: "$200.00",
-        name: "Women Full lenth Coat",
-    },
-    {
-        id: "p8",
-        img: "img/product-8.jpg",
-        price: "$100.00",
-        subPrice: "$160.00",
-        name: "Childeren shirt",
-    },
-    {
-        id: "p9",
-        img: "img/product-1.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
-        name: "Colorful Stylish Shirt",
-    },
-];
+import Pagination from "../UI/Pagination";
 
 const sortData = (data, type) => {
     return data.sort((a, b) => {
-        if (type === "Latest") {
-            return a.id > b.id ? 1 : -1;
-        } else if (type === "Popularity") {
-            return a.id < b.id ? 1 : -1;
+        if (type === "asc") {
+            return a.price > b.price ? 1 : -1;
+        } else if (type === "desc") {
+            return a.price < b.price ? 1 : -1;
         }
     });
 };
 
 function Shop(props) {
-    const [productData, setProductData] = useState([]);
-    const [state, setState] = useState(false);
-
-    useEffect(() => {
-        setProductData(DUMMY_PRODUCTS);
-    }, []);
+    const [productData, setProductData] = useState(props.products);
+    const [sortProduct, setSortProduct] = useState("false");
+    const [itemsPerPage] = useState(3);
+    const [pageNumber, setPageNumber] = useState(1);
 
     const searchHandler = (event) => {
         const enteredValue = event.target.value;
-        const searchedData = DUMMY_PRODUCTS.filter(
+        const searchedData = props.products.filter(
             (item) =>
                 item.name.toLowerCase().includes(enteredValue.toLowerCase()) ||
                 item.price.toString().includes(enteredValue)
@@ -97,11 +30,39 @@ function Shop(props) {
     };
 
     const sortHandler = (event) => {
-        const selectedValue = event.target.value;
-        const sortedData = sortData(productData, selectedValue);
-        setProductData(sortedData);
-        setState((prevstate) => !prevstate);
+        setSortProduct(event.target.value);
     };
+
+    const sortedProducts = sortData(productData, sortProduct);
+
+    const indexOfLastItem = pageNumber * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = sortedProducts.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+    );
+
+    const changePage = (pageNumber, event) => {
+        event.preventDefault();
+        setPageNumber(pageNumber);
+    };
+
+    const prevPage = (event) => {
+        event.preventDefault();
+        setPageNumber((prevState) => {
+            return prevState > 1 ? prevState - 1 : prevState;
+        });
+    };
+
+    const nextPage = (event) => {
+        event.preventDefault();
+        setPageNumber((prevState) => {
+            return prevState < sortedProducts.length / itemsPerPage
+                ? prevState + 1
+                : prevState;
+        });
+    };
+
     return (
         <>
             <div className="container-fluid bg-secondary mb-5">
@@ -233,8 +194,8 @@ function Shop(props) {
                         <div className="row pb-3">
                             <div className="col-12 pb-1">
                                 <div className="d-flex align-items-center justify-content-between mb-4">
-                                    <form className="d-flex justify-content-between">
-                                        <div className="input-group">
+                                    <form className="d-flex justify-content-between w-100">
+                                        <div className="input-group w-50">
                                             <input
                                                 type="text"
                                                 className="form-control"
@@ -247,32 +208,26 @@ function Shop(props) {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="input-group ms-auto">
-                                            <label htmlFor="sort">
-                                                Sort by:
-                                            </label>
-                                            <select
-                                                id="sort"
-                                                onChange={sortHandler}
-                                            >
-                                                <option value="">
-                                                    --Select--
-                                                </option>
-                                                <option value="Latest">
-                                                    Latest
-                                                </option>
-                                                <option value="Popularity">
-                                                    Popularity
-                                                </option>
-                                                <option value="Best Rating">
-                                                    Best Rating
-                                                </option>
-                                            </select>
-                                        </div>
+                                        <select
+                                            id="sort"
+                                            name="sort"
+                                            defaultValue={""}
+                                            onChange={sortHandler}
+                                        >
+                                            <option disabled value="">
+                                                Sort by
+                                            </option>
+                                            <option value="desc">
+                                                Price (high to low)
+                                            </option>
+                                            <option value="asc">
+                                                Price (low to high)
+                                            </option>
+                                        </select>
                                     </form>
                                 </div>
                             </div>
-                            {productData.map((product) => (
+                            {currentItems.map((product) => (
                                 <ProductItem
                                     key={product.id}
                                     id={product.id}
@@ -283,53 +238,14 @@ function Shop(props) {
                                 />
                             ))}
                             <div className="col-12 pb-1">
-                                <nav aria-label="Page navigation">
-                                    <ul className="pagination justify-content-center mb-3">
-                                        <li className="page-item disabled">
-                                            <a
-                                                className="page-link"
-                                                href="#"
-                                                aria-label="Previous"
-                                            >
-                                                <span aria-hidden="true">
-                                                    «
-                                                </span>
-                                                <span className="sr-only">
-                                                    Previous
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li className="page-item active">
-                                            <a className="page-link" href="#">
-                                                1
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#">
-                                                2
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a className="page-link" href="#">
-                                                3
-                                            </a>
-                                        </li>
-                                        <li className="page-item">
-                                            <a
-                                                className="page-link"
-                                                href="#"
-                                                aria-label="Next"
-                                            >
-                                                <span aria-hidden="true">
-                                                    »
-                                                </span>
-                                                <span className="sr-only">
-                                                    Next
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <Pagination
+                                    totalItems={sortedProducts.length}
+                                    itemsPerPage={itemsPerPage}
+                                    changePage={changePage}
+                                    prevPage={prevPage}
+                                    nextPage={nextPage}
+                                    pageNumber={pageNumber}
+                                />
                             </div>
                         </div>
                     </div>
