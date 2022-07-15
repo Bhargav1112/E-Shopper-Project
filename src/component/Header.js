@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
+import CartContext from "../store/cart-context";
+import { isLoggedIn } from "../utils";
 
 function Header(props) {
+    const cartCtx = useContext(CartContext);
     return (
         <header>
             <div className="container-fluid">
@@ -75,7 +78,9 @@ function Header(props) {
                         </a>
                         <Link to={"/cart"} className="btn border">
                             <i className="fas fa-shopping-cart text-primary" />
-                            <span className="badge">0</span>
+                            <span className="badge">
+                                {cartCtx.totalQuantity}
+                            </span>
                         </Link>
                     </div>
                 </div>
@@ -134,12 +139,23 @@ function Header(props) {
                                     </NavLink>
                                 </div>
                                 <div className="navbar-nav ml-auto py-0">
-                                    <NavLink
-                                        to={"/login"}
-                                        className="nav-item nav-link"
-                                    >
-                                        Login
-                                    </NavLink>
+                                    {!isLoggedIn() && (
+                                        <NavLink
+                                            to={"/login"}
+                                            className="nav-item nav-link"
+                                        >
+                                            Login
+                                        </NavLink>
+                                    )}
+                                    {isLoggedIn() && (
+                                        <a
+                                            href="javascript:void(0)"
+                                            className="nav-item nav-link"
+                                            onClick={props.onLogout}
+                                        >
+                                            Logout
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </nav>

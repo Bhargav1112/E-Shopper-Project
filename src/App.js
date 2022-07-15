@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Switch } from "react-router-dom";
 
 import Header from "./component/Header";
@@ -12,112 +12,119 @@ import Checkout from "./container/Pages/Checkout";
 import LoginPage from "./container/Pages/LoginPage";
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
+import CartContextProvider from "./store/cart-context-provider";
 
 const DUMMY_PRODUCTS = [
     {
         id: "p1",
         img: "img/product-1.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
+        price: 123,
+        subPrice: 150,
         name: "One peice",
     },
     {
         id: "p2",
         img: "img/product-2.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
+        price: 200,
+        subPrice: 300,
         name: "Jacket",
     },
     {
         id: "p3",
         img: "img/product-3.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
+        price: 250,
+        subPrice: 300,
         name: "Lather Jacket",
     },
     {
         id: "p4",
         img: "img/product-4.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
+        price: 150,
+        subPrice: 200,
         name: "Women Proffetional",
     },
     {
         id: "p5",
         img: "img/product-5.jpg",
-        price: "$123.00",
-        subPrice: "$150.00",
+        price: 300,
+        subPrice: 500,
         name: "Colorful Stylish T-Shirt",
     },
     {
         id: "p6",
         img: "img/product-6.jpg",
-        price: "$200.00",
-        subPrice: "$250.00",
+        price: 450,
+        subPrice: 600,
         name: "Blazer",
     },
     {
         id: "p7",
         img: "img/product-7.jpg",
-        price: "$150.00",
-        subPrice: "$200.00",
+        price: 350,
+        subPrice: 400,
         name: "Women Full lenth Coat",
     },
     {
         id: "p8",
         img: "img/product-8.jpg",
-        price: "$100.00",
-        subPrice: "$160.00",
+        price: 320,
+        subPrice: 400,
         name: "Childeren shirt",
     },
     {
         id: "p9",
         img: "img/product-1.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 310,
+        subPrice: 400,
         name: "Colorful Stylish Shirt",
     },
     {
         id: "p10",
         img: "img/cat-1.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 65,
+        subPrice: 100,
         name: "Colorful Stylish Shirt",
     },
     {
         id: "p11",
         img: "img/cat-2.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 75,
+        subPrice: 120,
         name: "Colorful Stylish Shirt",
     },
     {
         id: "p12",
         img: "img/cat-3.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 152,
+        subPrice: 200,
         name: "Colorful Stylish Shirt",
     },
     {
         id: "p13",
         img: "img/cat-4.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 165,
+        subPrice: 180,
         name: "Colorful Stylish Shirt",
     },
     {
         id: "p14",
         img: "img/cat-5.jpg",
-        price: "$125.00",
-        subPrice: "$170.00",
+        price: 160,
+        subPrice: 175,
         name: "Colorful Stylish Shirt",
     },
 ];
 
 function App() {
+    const [render, setRender] = useState(false);
+    const logoutHandler = () => {
+        localStorage.removeItem("user");
+        setRender((prev) => !prev);
+    };
+
     return (
-        <>
-            <Header />
+        <CartContextProvider>
+            <Header onLogout={logoutHandler} />
             <main>
                 <Switch>
                     <PublicRoute path="/" exact>
@@ -144,7 +151,7 @@ function App() {
                 </Switch>
             </main>
             <Footer />
-        </>
+        </CartContextProvider>
     );
 }
 

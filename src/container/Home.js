@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ProductItem from "./ProductItem";
 
 function Home(props) {
@@ -27,9 +28,12 @@ function Home(props) {
                                 <h3 className="display-4 text-white font-weight-semi-bold mb-4">
                                     Fashionable Dress
                                 </h3>
-                                <a href className="btn btn-light py-2 px-3">
+                                <Link
+                                    to="/shop"
+                                    className="btn btn-light py-2 px-3"
+                                >
                                     Shop Now
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -47,9 +51,12 @@ function Home(props) {
                                 <h3 className="display-4 text-white font-weight-semi-bold mb-4">
                                     Reasonable Price
                                 </h3>
-                                <a href className="btn btn-light py-2 px-3">
+                                <Link
+                                    to="/shop"
+                                    className="btn btn-light py-2 px-3"
+                                >
                                     Shop Now
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
