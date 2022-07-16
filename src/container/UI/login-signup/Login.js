@@ -4,10 +4,11 @@ import classes from "./Login.module.css";
 
 function Login(props) {
     const history = useHistory();
+
     const submitHandler = (event) => {
         event.preventDefault();
         localStorage.setItem("user", "1");
-        history.push("/");
+        history.push(history.location.state?.path || "/");
     };
     return (
         <form className={`shadow ${classes.form}`} onSubmit={submitHandler}>

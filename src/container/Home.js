@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ProductItem from "./ProductItem";
 
 function Home(props) {
+    document.title = "E-shopper-Home";
     return (
         <>
             <div

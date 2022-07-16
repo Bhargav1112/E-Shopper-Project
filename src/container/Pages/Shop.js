@@ -19,6 +19,8 @@ function Shop(props) {
     const [itemsPerPage] = useState(3);
     const [pageNumber, setPageNumber] = useState(1);
 
+    document.title = "E-shopper-Shop";
+
     const searchHandler = (event) => {
         const enteredValue = event.target.value;
         const searchedData = props.products.filter(

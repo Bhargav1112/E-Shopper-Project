@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Contact(props) {
+    document.title = "E-shopper-Contact";
     return (
         <>
             <div className="container-fluid bg-secondary mb-5">

@@ -1,10 +1,14 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import CartContext from "../../store/cart-context";
+import { isLoggedIn } from "../../utils";
 import CartItem from "../cart/CartItem";
 
 function Cart(props) {
     const cartCtx = useContext(CartContext);
+    const history = useHistory();
+
+    document.title = "E-shopper-Cart";
 
     const addItemHandler = (item) => {
         cartCtx.onAddItem({ ...item, quantity: 1 });
@@ -18,6 +22,11 @@ function Cart(props) {
         cartCtx.onRemoveWholeItem(id);
     };
 
+    const clickHandler = () => {
+        if (!isLoggedIn()) {
+            history.push("/login", { path: "/checkout" });
+        }
+    };
     const shippingCharge = cartCtx.items.length === 0 ? 0 : 10;
 
     return (
@@ -158,6 +167,7 @@ function Cart(props) {
                                 </div>
                                 <Link
                                     to={"/checkout"}
+                                    onClick={clickHandler}
                                     className={`btn btn-block btn-primary my-3 py-3 ${
                                         cartCtx.items.length > 0
                                             ? ""

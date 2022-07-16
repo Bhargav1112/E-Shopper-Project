@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -13,6 +13,7 @@ import LoginPage from "./container/Pages/LoginPage";
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import CartContextProvider from "./store/cart-context-provider";
+import NotFoundPage from "./container/UI/NotFoundPage";
 
 const DUMMY_PRODUCTS = [
     {
@@ -148,6 +149,9 @@ function App() {
                     <PublicRoute path={"/login"} restricted={true} exact>
                         <LoginPage />
                     </PublicRoute>
+                    <Route path="*">
+                        <NotFoundPage />
+                    </Route>
                 </Switch>
             </main>
             <Footer />

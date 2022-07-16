@@ -5,6 +5,8 @@ import Signup from "../UI/login-signup/Signup";
 function LoginPage(props) {
     const [user, setUser] = useState("login");
 
+    document.title = "E-shopper-Login";
+
     const onSignup = () => {
         setUser("signup");
     };

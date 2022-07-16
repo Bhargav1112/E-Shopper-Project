@@ -1,12 +1,19 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import CartContext from "../store/cart-context";
+import { isLoggedIn } from "../utils/index";
 
 function ProductItem(props) {
     const { id, img, name, price, subPrice } = props;
     const cartCtx = useContext(CartContext);
+    const history = useHistory();
 
     const addToCartHandler = (event) => {
         event.preventDefault();
+        if (!isLoggedIn()) {
+            history.push("/login", { path: "/shop" });
+            return;
+        }
         cartCtx.onAddItem({
             id,
             img,
