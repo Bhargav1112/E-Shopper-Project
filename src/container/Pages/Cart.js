@@ -6,7 +6,6 @@ import CartItem from "../cart/CartItem";
 
 function Cart(props) {
     const cartCtx = useContext(CartContext);
-    const history = useHistory();
 
     document.title = "E-shopper-Cart";
 
@@ -20,12 +19,6 @@ function Cart(props) {
 
     const removeWholeItem = (id) => {
         cartCtx.onRemoveWholeItem(id);
-    };
-
-    const clickHandler = () => {
-        if (!isLoggedIn()) {
-            history.push("/login", { path: "/checkout" });
-        }
     };
     const shippingCharge = cartCtx.items.length === 0 ? 0 : 10;
 
@@ -167,7 +160,6 @@ function Cart(props) {
                                 </div>
                                 <Link
                                     to={"/checkout"}
-                                    onClick={clickHandler}
                                     className={`btn btn-block btn-primary my-3 py-3 ${
                                         cartCtx.items.length > 0
                                             ? ""
