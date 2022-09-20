@@ -117,15 +117,10 @@ const DUMMY_PRODUCTS = [
 ];
 
 function App() {
-    const [render, setRender] = useState(false);
-    const logoutHandler = () => {
-        localStorage.removeItem("user");
-        setRender((prev) => !prev);
-    };
 
     return (
         <CartContextProvider>
-            <Header onLogout={logoutHandler} />
+            <Header />
             <main>
                 <Switch>
                     <PublicRoute path="/" exact>

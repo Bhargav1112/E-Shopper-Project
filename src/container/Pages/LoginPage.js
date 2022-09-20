@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ForgotPassword from "../UI/login-signup/ForgotPassword";
 import Login from "../UI/login-signup/Login";
 import Signup from "../UI/login-signup/Signup";
 
@@ -15,18 +16,26 @@ function LoginPage(props) {
         setUser("login");
     };
 
+    const onForgotPassword = () => {
+        setUser("forgot")
+    }
+
     const displayForm =
         user === "login" ? (
-            <Login onSignup={onSignup} />
+            <Login onSignup={onSignup} onForgotPassword={onForgotPassword} />
         ) : (
-            <Signup onLogin={onLogin} />
+            user === "forgot" ? (
+                <ForgotPassword setUser={setUser} />
+            ) : (
+                <Signup onLogin={onLogin} />
+            )
         );
     return (
         <>
             <div className="container">
                 <div className="heading py-4">
                     <h1 className="text-center">
-                        {user === "login" ? "Login" : "Signup"}
+                        {user === "login" ? "Login" : user === "forgot" ? "Forgot Password" : "Signup"}
                     </h1>
                 </div>
             </div>

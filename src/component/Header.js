@@ -1,10 +1,16 @@
 import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
+import { signOutAction } from "../redux/actions/authAction";
 import CartContext from "../store/cart-context";
-import { isLoggedIn } from "../utils";
 
 function Header(props) {
     const cartCtx = useContext(CartContext);
+    const auth = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+    const onLogoutHandler = () => {
+        dispatch(signOutAction())
+    }
     return (
         <header>
             <div className="container-fluid">
@@ -139,7 +145,7 @@ function Header(props) {
                                     </NavLink>
                                 </div>
                                 <div className="navbar-nav ml-auto py-0">
-                                    {!isLoggedIn() && (
+                                    {!auth.token && (
                                         <NavLink
                                             to={"/login"}
                                             className="nav-item nav-link"
@@ -147,11 +153,11 @@ function Header(props) {
                                             Login
                                         </NavLink>
                                     )}
-                                    {isLoggedIn() && (
+                                    {auth.token && (
                                         <a
                                             href="javascript:void(0)"
                                             className="nav-item nav-link"
-                                            onClick={props.onLogout}
+                                            onClick={onLogoutHandler}
                                         >
                                             Logout
                                         </a>
