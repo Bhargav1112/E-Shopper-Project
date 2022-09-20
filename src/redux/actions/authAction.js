@@ -18,6 +18,7 @@ export const signUpAction = data => {
     } catch (error) {
       const errorMessage = error.message;
       dispatch(errorAuth(errorMessage))
+
     }
   }
 }
@@ -92,13 +93,13 @@ export const forgotPasswordAction = email => {
   }
 }
 
-const loadingAuth = () => {
+export const loadingAuth = () => {
   return dispatch => {
     dispatch({ type: ActionType.LOADINGAUTH })
   }
 }
 
-const errorAuth = message => {
+export const errorAuth = message => {
   return dispatch => {
     dispatch({ type: ActionType.ERRORAUTH, payload: message })
   }

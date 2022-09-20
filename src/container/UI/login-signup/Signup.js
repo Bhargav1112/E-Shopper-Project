@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { googleSigninAction, signUpAction } from "../../../redux/actions/authAction";
 import classes from "./Signup.module.css";
 
