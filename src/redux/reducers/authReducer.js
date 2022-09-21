@@ -2,7 +2,7 @@ import * as ActionType from "../actionTypes"
 
 const initialState = {
   user: null,
-  token: '',
+  token: localStorage.getItem('user') || "",
   loading: false,
   error: ''
 }

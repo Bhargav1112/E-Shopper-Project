@@ -14,6 +14,8 @@ import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import CartContextProvider from "./store/cart-context-provider";
 import NotFoundPage from "./container/UI/NotFoundPage";
+import AdminHome from "./Admin/components/AdminHome";
+import { isLoggedIn } from "./utils";
 
 const DUMMY_PRODUCTS = [
     {
@@ -117,40 +119,48 @@ const DUMMY_PRODUCTS = [
 ];
 
 function App() {
-
+    const [showAdmin, setShowAdmin] = useState(localStorage.getItem('admin') || "")
     return (
-        <CartContextProvider>
-            <Header />
-            <main>
-                <Switch>
-                    <PublicRoute path="/" exact>
-                        <Home products={DUMMY_PRODUCTS} />
-                    </PublicRoute>
-                    <PublicRoute path="/shop" exact>
-                        <Shop products={DUMMY_PRODUCTS} />
-                    </PublicRoute>
-                    <PublicRoute path="/detail" exact>
-                        <ProductDetail />
-                    </PublicRoute>
-                    <PublicRoute path="/contact" exact>
-                        <Contact />
-                    </PublicRoute>
-                    <PublicRoute path="/cart" exact>
-                        <Cart />
-                    </PublicRoute>
-                    <PrivateRoute path="/checkout" exact>
-                        <Checkout />
-                    </PrivateRoute>
-                    <PublicRoute path={"/login"} restricted={true} exact>
-                        <LoginPage />
-                    </PublicRoute>
-                    <Route path="*">
-                        <NotFoundPage />
-                    </Route>
-                </Switch>
-            </main>
-            <Footer />
-        </CartContextProvider>
+        <>
+            {
+                showAdmin ? (
+                    <AdminHome setShowAdmin={setShowAdmin} />
+                ) : (
+                    <CartContextProvider>
+                        <Header setShowAdmin={setShowAdmin} />
+                        <main>
+                            <Switch>
+                                <PublicRoute path="/" exact>
+                                    <Home products={DUMMY_PRODUCTS} />
+                                </PublicRoute>
+                                <PublicRoute path="/shop" exact>
+                                    <Shop products={DUMMY_PRODUCTS} />
+                                </PublicRoute>
+                                <PublicRoute path="/detail" exact>
+                                    <ProductDetail />
+                                </PublicRoute>
+                                <PublicRoute path="/contact" exact>
+                                    <Contact />
+                                </PublicRoute>
+                                <PublicRoute path="/cart" exact>
+                                    <Cart />
+                                </PublicRoute>
+                                <PrivateRoute path="/checkout" exact>
+                                    <Checkout />
+                                </PrivateRoute>
+                                <PublicRoute path={"/login"} restricted={true} exact>
+                                    <LoginPage />
+                                </PublicRoute>
+                                <Route path="*">
+                                    <NotFoundPage />
+                                </Route>
+                            </Switch>
+                        </main>
+                        <Footer />
+                    </CartContextProvider>
+                )
+            }
+        </>
     );
 }
 
