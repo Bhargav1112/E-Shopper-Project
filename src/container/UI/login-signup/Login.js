@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { googleSigninAction, signInAction } from "../../../redux/actions/authAction";
 import { FcGoogle } from 'react-icons/fc';
 import classes from "./Login.module.css";
+import Loader from "../Loader/Loader";
 
 function Login(props) {
 
@@ -47,7 +48,7 @@ function Login(props) {
         <>
             {
                 auth.loading ?
-                    <h5 className="loading">Loading...</h5>
+                    <Loader />
                     :
                     <form className={`shadow ${classes.form}`} onSubmit={submitHandler}>
                         {auth.error && <p className="error-message">{auth.error}</p>}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { googleSigninAction, signUpAction } from "../../../redux/actions/authAction";
+import Loader from "../Loader/Loader";
 import classes from "./Signup.module.css";
 
 function Signup(props) {
@@ -53,9 +54,8 @@ function Signup(props) {
     return (
         <div>
             {auth.loading ?
-                <h5 style={{ textAlign: "center" }}>Loading</h5>
+                <Loader />
                 :
-
                 <form className={`shadow ${classes.form}`} onSubmit={handleSubmit}>
                     {auth.error && <p className="error-message">{auth.error}</p>}
                     <div className="form-group">

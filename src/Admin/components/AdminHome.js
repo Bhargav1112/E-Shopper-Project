@@ -12,12 +12,10 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import CategoryPage from '../container/pages/CategoryPage';
 import ProductsPage from '../container/pages/ProductsPage';
@@ -104,8 +102,8 @@ export default function AdminHome(props) {
   };
 
   const menuItems = [
-    { lable: "Category", to: "/category", icon: <InboxIcon /> },
-    { lable: "Products", to: "/product", icon: <InboxIcon /> },
+    { lable: "Category", to: "/admin/category", icon: <InboxIcon /> },
+    { lable: "Products", to: "/admin/product", icon: <InboxIcon /> },
   ]
 
   return (
@@ -178,10 +176,10 @@ export default function AdminHome(props) {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Switch>
-          <Route path={"/category"} exact>
+          <Route path={"/admin/category"} exact>
             <CategoryPage />
           </Route>
-          <Route path={"/product"} exact>
+          <Route path={"/admin/product"} exact>
             <ProductsPage />
           </Route>
         </Switch>

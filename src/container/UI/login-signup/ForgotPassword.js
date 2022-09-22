@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPasswordAction } from '../../../redux/actions/authAction';
+import Loader from '../Loader/Loader';
 import classes from "./forgotPassword.module.css"
 
 function ForgotPassword(props) {
@@ -32,7 +33,7 @@ function ForgotPassword(props) {
   return (
     <div >
       {auth.loading ? (
-        <h5 className='text-center'>Loading...</h5>
+        <Loader />
       ) : (
         <form className={`shadow ${classes.form}`} onSubmit={handleSubmit}>
           {auth.error && <p className="error-message">{auth.error}</p>}

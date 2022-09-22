@@ -15,7 +15,6 @@ import PrivateRoute from "./routes/PrivateRoute";
 import CartContextProvider from "./store/cart-context-provider";
 import NotFoundPage from "./container/UI/NotFoundPage";
 import AdminHome from "./Admin/components/AdminHome";
-import { isLoggedIn } from "./utils";
 
 const DUMMY_PRODUCTS = [
     {
@@ -124,7 +123,11 @@ function App() {
         <>
             {
                 showAdmin ? (
-                    <AdminHome setShowAdmin={setShowAdmin} />
+                    <Switch>
+                        <PrivateRoute path="/admin">
+                            <AdminHome setShowAdmin={setShowAdmin} />
+                        </PrivateRoute>
+                    </Switch>
                 ) : (
                     <CartContextProvider>
                         <Header setShowAdmin={setShowAdmin} />

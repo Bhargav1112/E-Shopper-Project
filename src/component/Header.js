@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import { signOutAction } from "../redux/actions/authAction";
 import CartContext from "../store/cart-context";
-import { isLoggedIn } from "../utils";
 
 function Header(props) {
     const cartCtx = useContext(CartContext);
@@ -156,16 +155,16 @@ function Header(props) {
                                     )}
                                     {auth.token && (
                                         <>
-                                            <a
-                                                href="javascript:void(0)"
-                                                className="nav-item nav-link"
+                                            <li
+                                                className="nav-item nav-link d-inline-block"
                                                 onClick={onLogoutHandler}
                                             >
                                                 Logout
-                                            </a>
-                                            <p className="nav-item nav-link d-inline-block" onClick={() => { props.setShowAdmin(true); localStorage.setItem("admin", "1") }} >
+                                            </li>
+                                            {/* <p className="nav-item nav-link d-inline-block" onClick={() => { props.setShowAdmin(true); localStorage.setItem("admin", "1") }} >
                                                 Admin Panel
-                                            </p>
+                                            </p> */}
+                                            <Link to="/admin" className="nav-item nav-link link d-inline-block" onClick={() => { props.setShowAdmin(true); localStorage.setItem("admin", "1") }}>Admin Panel</Link>
                                         </>
                                     )}
                                 </div>
