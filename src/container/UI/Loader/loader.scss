@@ -1,0 +1,36 @@
+.loader {
+	background: #d19c97;
+	position: relative;
+	animation: loader-15 1s ease-in-out infinite;
+	animation-delay: 0.4s;
+	width: .5rem;
+	height: 1rem;
+	margin: 0 1rem;
+	&:after,
+	&:before {
+		content: '';
+		position: absolute;
+		width: inherit;
+		height: inherit;
+		background: inherit;
+		animation: inherit;
+	}
+	&:before {
+		right: 1rem;
+		animation-delay: 0.2s;
+	}
+	&:after {
+		left: 1rem;
+		animation-delay: 0.6s;
+	}
+}
+
+@keyframes loader-15 {
+	0%,
+	100% {
+		box-shadow: 0 0 0 #d19c97, 0 0 0 #d19c97;
+	}
+	50% {
+		box-shadow: 0 -.875rem 0 #d19c97, 0 .875rem 0 #d19c97;
+	}
+}

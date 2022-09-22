@@ -7,10 +7,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import "./category.css"
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategoryAction } from '../../../redux/actions/categoryAction';
+import { getCategoryAction, removeCategoryAction } from '../../../redux/actions/categoryAction';
+import Loader from '../../../container/UI/Loader/Loader';
 
 const CategoryPage = (props) => {
   const [showAddCategory, setShowAddCategory] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const [selectedData, setSelectedData] = useState(null)
   const dispatch = useDispatch()
   const category = useSelector(state => state.category)
 
@@ -20,10 +23,22 @@ const CategoryPage = (props) => {
 
   const handleHideAddCategory = () => {
     setShowAddCategory(false)
+    setEditMode(false)
+    setSelectedData(null)
   }
 
   const handleShowAddPopup = () => {
     setShowAddCategory(true)
+  }
+
+  const handleEdit = data => {
+    setSelectedData(data)
+    setEditMode(true)
+    setShowAddCategory(true)
+  }
+
+  const handleDelete = data => {
+    dispatch(removeCategoryAction(data))
   }
 
   const columns = [
@@ -46,10 +61,10 @@ const CategoryPage = (props) => {
       renderCell: params => {
         return (
           <>
-            <IconButton >
+            <IconButton onClick={handleEdit.bind(null, params.row)} >
               <EditIcon />
             </IconButton>
-            <IconButton >
+            <IconButton onClick={handleDelete.bind(null, params.row)}>
               <DeleteIcon />
             </IconButton>
           </>
@@ -66,11 +81,23 @@ const CategoryPage = (props) => {
       <div className="category-add mb-5">
         <button type='button' onClick={handleShowAddPopup}>Add</button>
       </div>
-      <AddCategoryDialog open={showAddCategory} onClose={handleHideAddCategory} />
-      <DataGridTable
-        columns={columns}
-        rows={category.categoryList}
-      />
+      <AddCategoryDialog open={showAddCategory} onClose={handleHideAddCategory} editMode={editMode} data={selectedData} />
+      <div className="category-data">
+        {category.loading ? (
+          <Loader />
+        ) : (
+          category.error ? (
+            <p className="error-message">{category.error}</p>
+          ) : (
+            <DataGridTable
+              columns={columns}
+              rows={category.categoryList}
+            />
+          )
+        )
+        }
+
+      </div>
     </>
   )
 }

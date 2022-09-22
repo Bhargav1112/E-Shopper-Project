@@ -1,7 +1,7 @@
 import * as ActionType from "../actionTypes"
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase"
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 
 export const getCategoryAction = () => {
@@ -41,6 +41,10 @@ export const removeCategoryAction = data => {
   return async (dispatch) => {
     try {
       dispatch(loadingCategory())
+      const imageRef = ref(storage, `category/${data.imageName}`);
+      await deleteObject(imageRef)
+      await deleteDoc(doc(db, "category", data.id));
+      dispatch({ type: ActionType.REMOVE_CATEGORY, payload: data.id })
     } catch (error) {
       dispatch(errorCategory(error.message))
     }
@@ -51,6 +55,20 @@ export const updateCategoryAction = data => {
   return async (dispatch) => {
     try {
       dispatch(loadingCategory())
+      if (typeof data.img === "string") {
+        await updateDoc(doc(db, "category", data.id), { ...data });
+        dispatch({ type: ActionType.UPDATE_CATEGORY, payload: { ...data } })
+        console.log("data", data);
+      } else {
+        const imageName = Math.floor(Math.random() * 100000).toString()
+        const imageRef = ref(storage, `category/${data.imageName}`);
+        await deleteObject(imageRef)
+        const newImageRef = ref(storage, `category/${imageName}`)
+        const snapshot = await uploadBytes(newImageRef, data.img)
+        const imageUrl = await getDownloadURL(snapshot.ref)
+        await updateDoc(doc(db, "category", data.id), { ...data, imageName, img: imageUrl })
+        dispatch({ type: ActionType.UPDATE_CATEGORY, payload: { ...data, imageName, img: imageUrl } })
+      }
     } catch (error) {
       dispatch(errorCategory(error.message))
     }

@@ -6,17 +6,22 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import { addCategoryAction } from '../../../redux/actions/categoryAction';
+import { addCategoryAction, updateCategoryAction } from '../../../redux/actions/categoryAction';
 import { useDispatch } from 'react-redux';
 
 export default function AddCategoryDialog(props) {
-  const { open, onClose } = props
+  const { open, onClose, editMode, data } = props
   const dispatch = useDispatch()
 
   const [categoryName, setCategoryName] = useState("")
   const [selectedFile, setSelectedFile] = useState(null)
   const [nameError, setNameError] = useState("")
-  const [fileError, setFileError] = useState("")
+
+  React.useEffect(() => {
+    if (editMode) {
+      setCategoryName(data?.name)
+    }
+  }, [editMode, data?.name])
 
   const handleChange = (e) => {
     const { name, value, files } = e.target
@@ -30,38 +35,37 @@ export default function AddCategoryDialog(props) {
     }
     if (name === "image") {
       setSelectedFile(files[0])
-      if (files.length) {
-        setFileError("")
-      } else {
-        setFileError("This field is required.")
-      }
     }
   }
 
   const handleClose = () => {
     onClose()
     setCategoryName("")
-    setFileError("")
     setNameError("")
     setSelectedFile(null)
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (!categoryName || !selectedFile) {
-      if (!categoryName) {
-        setNameError("This field is required.")
-      }
-      if (!selectedFile) {
-        setFileError("This field is required.")
-      }
+    if (!categoryName) {
+      setNameError("This field is required.")
       return
     }
-    const data = {
-      name: categoryName,
-      img: selectedFile
+    if (editMode) {
+      const formData = {
+        ...data,
+        name: categoryName,
+        img: selectedFile || data.img
+      }
+      console.log(formData);
+      dispatch(updateCategoryAction(formData))
+    } else {
+      const formData = {
+        name: categoryName,
+        img: selectedFile
+      }
+      dispatch(addCategoryAction(formData))
     }
-    dispatch(addCategoryAction(data))
     handleClose()
   }
 
@@ -76,7 +80,7 @@ export default function AddCategoryDialog(props) {
               <TextField
                 margin="dense"
                 id="name"
-                label="Please enter category name"
+                label="Category name"
                 type="text"
                 fullWidth
                 name="name"
@@ -98,14 +102,12 @@ export default function AddCategoryDialog(props) {
                 fullWidth
                 variant="standard"
                 onChange={handleChange}
-                onBlur={handleChange}
               />
-              {fileError && <p className="error-message">{fileError}</p>}
             </div>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} sx={{ color: "#d19c97" }}>Cancel</Button>
-            <Button type='submit' sx={{ color: "#d19c97" }}>Add</Button>
+            <Button type='submit' sx={{ color: "#d19c97" }}>{editMode ? "Update" : "Add"}</Button>
           </DialogActions>
 
         </form>
