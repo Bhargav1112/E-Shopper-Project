@@ -1,0 +1,24 @@
+.category-inner{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  .category-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    img{
+      width: 100%;
+      height: auto;
+    }
+  }
+}
