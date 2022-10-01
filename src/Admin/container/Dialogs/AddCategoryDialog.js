@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import { addCategoryAction, updateCategoryAction } from '../../../redux/actions/categoryAction';
+import { addCategoryAction, updateCategoryAction } from '../../../redux/actions/Admin/categoryAction';
 import { useDispatch } from 'react-redux';
 
 export default function AddCategoryDialog(props) {

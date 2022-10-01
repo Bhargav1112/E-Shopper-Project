@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -118,19 +118,19 @@ const DUMMY_PRODUCTS = [
 ];
 
 function App() {
-    const [showAdmin, setShowAdmin] = useState(localStorage.getItem('admin') || "")
+    const location = useLocation()
     return (
         <>
             {
-                showAdmin ? (
+                location.pathname.includes("admin") ? (
                     <Switch>
                         <PrivateRoute path="/admin">
-                            <AdminHome setShowAdmin={setShowAdmin} />
+                            <AdminHome />
                         </PrivateRoute>
                     </Switch>
                 ) : (
                     <CartContextProvider>
-                        <Header setShowAdmin={setShowAdmin} />
+                        <Header />
                         <main>
                             <Switch>
                                 <PublicRoute path="/" exact>

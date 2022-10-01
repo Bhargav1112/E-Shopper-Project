@@ -1,4 +1,4 @@
-import * as ActionType from "../actionTypes"
+import * as ActionType from "../../actionTypes"
 
 const initialState = {
   categoryList: [],

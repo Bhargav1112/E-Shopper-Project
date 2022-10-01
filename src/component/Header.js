@@ -161,7 +161,7 @@ function Header(props) {
 											>
 												Logout
 											</li>
-											<Link to="/admin" className="nav-item nav-link link d-inline-block" onClick={() => { props.setShowAdmin(true); localStorage.setItem("admin", "1") }}>Admin Panel</Link>
+											<Link to="/admin" className="nav-item nav-link link d-inline-block" >Admin Panel</Link>
 										</>
 									)}
 								</div>

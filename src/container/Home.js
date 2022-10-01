@@ -5,16 +5,24 @@ import "./Home.scss"
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesData } from "../redux/actions/categoryUser";
 import Loader from "./UI/Loader/Loader";
+import { fetchProductsData } from "../redux/actions/productsAction";
 
 function Home(props) {
 	const dispatch = useDispatch()
 	const { loading, categories, error } = useSelector(state => state.categoryUserReducer)
 	console.log("categories", categories);
+	const { products, loading: loadingProduct, error: errorProduct } = useSelector(state => state.productReducer)
+	console.log(products);
 
 	useEffect(() => {
 		document.title = "E-shopper-Home";
-		dispatch(getCategoriesData())
-	}, [dispatch])
+		if (!categories.length) {
+			dispatch(getCategoriesData())
+		}
+		if (!products.length) {
+			dispatch(fetchProductsData())
+		}
+	}, [dispatch, products, categories])
 	return (
 		<>
 			<div
@@ -149,7 +157,7 @@ function Home(props) {
 
 				</div>
 				<div className="container">
-					<div className="row category-wrapper justify-content-between">
+					<div className={`row category-wrapper ${loading || error ? "justify-content-center" : "justify-content-between"}`}>
 						{loading ? (
 							<Loader />
 						) : (
@@ -360,17 +368,27 @@ function Home(props) {
 							<span className="px-2">Trandy Products</span>
 						</h2>
 					</div>
-					<div className="row px-xl-5 pb-3">
-						{props.products.slice(0, 6).map((product) => (
-							<ProductItem
-								key={product.id}
-								id={product.id}
-								img={product.img}
-								name={product.name}
-								price={product.price}
-								subPrice={product.subPrice}
-							/>
-						))}
+					<div className={`row px-xl-5 pb-3 ${loadingProduct || errorProduct ? "justify-content-center" : ""}`}>
+						{loadingProduct ? (
+							<Loader />
+						) : (
+							errorProduct ? (
+								<p className="error-message">{errorProduct}</p>
+							) : (
+								<>
+									{products.slice(0, 6).map((product) => (
+										<ProductItem
+											key={product.id}
+											id={product.id}
+											img={product.image}
+											name={product.name}
+											price={product.price}
+											subPrice={product.subPrice || 150}
+										/>
+									))}
+								</>
+							)
+						)}
 					</div>
 				</div>
 				<div className="container-fluid bg-secondary my-5">

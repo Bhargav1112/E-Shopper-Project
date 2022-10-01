@@ -1,5 +1,5 @@
 import { IconButton } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import DataGridTable from '../dataGridTable/DataGridTable'
 import AddCategoryDialog from '../Dialogs/AddCategoryDialog'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import "./category.css"
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategoryAction, removeCategoryAction } from '../../../redux/actions/categoryAction';
+import { getCategoryAction, removeCategoryAction } from '../../../redux/actions/Admin/categoryAction';
 import Loader from '../../../container/UI/Loader/Loader';
 
 const CategoryPage = (props) => {
@@ -43,6 +43,12 @@ const CategoryPage = (props) => {
 
   const columns = [
     {
+      field: 'serialNumber',
+      headerName: 'Sr. no.',
+      width: 70,
+      editable: true,
+    },
+    {
       field: 'name',
       headerName: 'Category',
       width: 600,
@@ -57,7 +63,7 @@ const CategoryPage = (props) => {
     {
       field: 'action',
       headerName: 'Action',
-      width: 300,
+      width: 230,
       renderCell: params => {
         return (
           <>
@@ -72,6 +78,13 @@ const CategoryPage = (props) => {
       }
     },
   ];
+
+  const rowsData = useMemo(() => category.categoryList.map((item, i) => {
+    return {
+      ...item,
+      serialNumber: i + 1
+    }
+  }), [category.categoryList])
 
   return (
     <>
@@ -91,7 +104,7 @@ const CategoryPage = (props) => {
           ) : (
             <DataGridTable
               columns={columns}
-              rows={category.categoryList}
+              rows={rowsData}
             />
           )
         )

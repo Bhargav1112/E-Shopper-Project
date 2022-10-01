@@ -139,7 +139,7 @@ export default function AdminHome(props) {
               color: "#fff"
             }
           }}
-            color="info" onClick={() => { props.setShowAdmin(false); localStorage.removeItem("admin"); navigate.push("/") }}
+            color="info" onClick={() => { navigate.push("/") }}
           >
             Back to Website
           </Button>
