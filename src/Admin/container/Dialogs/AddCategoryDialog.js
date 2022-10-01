@@ -57,7 +57,6 @@ export default function AddCategoryDialog(props) {
         name: categoryName,
         img: selectedFile || data.img
       }
-      console.log(formData);
       dispatch(updateCategoryAction(formData))
     } else {
       const formData = {

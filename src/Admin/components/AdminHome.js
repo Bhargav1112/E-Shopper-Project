@@ -93,6 +93,10 @@ export default function AdminHome(props) {
   const [open, setOpen] = React.useState(false);
   const navigate = useHistory()
 
+  React.useEffect(() => {
+    navigate.push("/admin/category")
+  }, [navigate])
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
