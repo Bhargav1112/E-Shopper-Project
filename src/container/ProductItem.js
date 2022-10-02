@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { addCartData } from "../redux/actions/cartAction";
 import CartContext from "../store/cart-context";
 import { isLoggedIn } from "../utils/index";
 
@@ -7,6 +9,7 @@ function ProductItem(props) {
     const { id, img, name, price, subPrice } = props;
     const cartCtx = useContext(CartContext);
     const history = useHistory();
+    const dispatch = useDispatch()
 
     const addToCartHandler = (event) => {
         event.preventDefault();
@@ -14,13 +17,23 @@ function ProductItem(props) {
             history.push("/login", { path: "/shop" });
             return;
         }
-        cartCtx.onAddItem({
+        // cartCtx.onAddItem({
+        //     id,
+        //     img,
+        //     title: name,
+        //     price,
+        //     quantity: 1,
+        // });
+        const data = {
             id,
             img,
             title: name,
-            price,
-            quantity: 1,
-        });
+            price: +price,
+            qty: 1,
+            subTotal: +price
+        }
+
+        dispatch(addCartData(data))
     };
 
     return (
@@ -43,18 +56,17 @@ function ProductItem(props) {
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-between bg-light border">
-                    <a href="#" className="btn btn-sm text-dark p-0">
+                    <Link to={`/shop/detail/${id}`} className="btn btn-sm text-dark p-0">
                         <i className="fas fa-eye text-primary mr-1" />
                         View Detail
-                    </a>
-                    <a
-                        href="#"
+                    </Link>
+                    <span
                         className="btn btn-sm text-dark p-0"
                         onClick={addToCartHandler}
                     >
                         <i className="fas fa-shopping-cart text-primary mr-1" />
                         Add To Cart
-                    </a>
+                    </span>
                 </div>
             </div>
         </div>

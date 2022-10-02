@@ -6,9 +6,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProductAction, updateProductAction } from '../../../redux/actions/Admin/productAction';
 import { useEffect } from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { getCategoryAction } from '../../../redux/actions/Admin/categoryAction';
 
 export default function ProductDialog(props) {
   const { open, onClose, editMode, data } = props
@@ -27,6 +32,13 @@ export default function ProductDialog(props) {
   })
 
   const dispatch = useDispatch()
+  const { categoryList } = useSelector(state => state.category)
+
+  useEffect(() => {
+    if (!categoryList.length) {
+      dispatch(getCategoryAction())
+    }
+  }, [dispatch, categoryList])
 
   useEffect(() => {
     if (editMode) {
@@ -35,7 +47,8 @@ export default function ProductDialog(props) {
         category: data.category,
         price: data.price,
         qty: data.qty,
-        image: data.image
+        image: data.image,
+        categoryId: data.categoryId
       })
     }
   }, [editMode, data])
@@ -45,6 +58,7 @@ export default function ProductDialog(props) {
     setError({
       name: "",
       category: "",
+      categoryId: "",
       price: "",
       qty: "",
       image: ""
@@ -62,7 +76,11 @@ export default function ProductDialog(props) {
     const { name, value, files } = event.target
     if (name === "image") {
       setEnteredValue({ ...enteredValue, [name]: files[0] })
-    } else {
+    }
+    else if (name === "category") {
+      setEnteredValue({ ...enteredValue, category: value, categoryId: categoryList?.find(item => item.name === value)?.id })
+    }
+    else {
       setEnteredValue({ ...enteredValue, [name]: value })
     }
     if (name === "name") {
@@ -114,6 +132,7 @@ export default function ProductDialog(props) {
     }
     handleClose()
   }
+  console.log("enteredValue", enteredValue);
 
   return (
     <div>
@@ -134,7 +153,7 @@ export default function ProductDialog(props) {
               value={enteredValue.name}
             />
             {error.name && <p className="error-message">{error.name}</p>}
-            <TextField
+            {/* <TextField
               name="category"
               onChange={handleChange}
               onBlur={handleChange}
@@ -145,7 +164,23 @@ export default function ProductDialog(props) {
               type="text"
               fullWidth
               variant="standard"
-            />
+            /> */}
+            <FormControl fullWidth margin="dense">
+              <InputLabel id="categories">Category</InputLabel>
+              <Select
+                labelId="categories"
+                id="category"
+                value={enteredValue.category}
+                label="Category"
+                name="category"
+                onChange={handleChange}
+                onBlur={handleChange}
+              >
+                {categoryList.map(item => (
+                  <MenuItem key={item.id} value={item.name}>{item.name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {error.category && <p className="error-message">{error.category}</p>}
             <TextField
               name="price"

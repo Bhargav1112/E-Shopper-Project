@@ -430,7 +430,7 @@ function Home(props) {
 						</h2>
 					</div>
 					<div className="row px-xl-5 pb-3">
-						{props.products.slice(7, 13).map((product) => (
+						{products.slice(7, 13).map((product) => (
 							<ProductItem
 								key={product.id}
 								id={product.id}

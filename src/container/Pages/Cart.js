@@ -1,26 +1,36 @@
 import React, { useContext } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { addCartData, deleteCartData, removeCartData } from "../../redux/actions/cartAction";
 import CartContext from "../../store/cart-context";
 import { isLoggedIn } from "../../utils";
 import CartItem from "../cart/CartItem";
 
 function Cart(props) {
     const cartCtx = useContext(CartContext);
+    const cart = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
 
-    document.title = "E-shopper-Cart";
+    useEffect(() => {
+        document.title = "E-shopper-Cart";
+    }, [])
 
     const addItemHandler = (item) => {
-        cartCtx.onAddItem({ ...item, quantity: 1 });
+        // cartCtx.onAddItem({ ...item, quantity: 1 });
+        dispatch(addCartData({ ...item, quantity: 1 }))
     };
 
-    const removeFromCartHandler = (id) => {
-        cartCtx.onRemoveItem(id);
+    const removeFromCartHandler = (item) => {
+        // cartCtx.onRemoveItem(id);
+        dispatch(removeCartData(item))
     };
 
-    const removeWholeItem = (id) => {
-        cartCtx.onRemoveWholeItem(id);
+    const removeWholeItem = (item) => {
+        // cartCtx.onRemoveWholeItem(id);
+        dispatch(deleteCartData(item))
     };
-    const shippingCharge = cartCtx.items.length === 0 ? 0 : 10;
+    const shippingCharge = cart.items.length === 0 ? 0 : 10;
 
     return (
         <>
@@ -55,7 +65,7 @@ function Cart(props) {
                                 </tr>
                             </thead>
                             <tbody className="align-middle">
-                                {cartCtx.items.length === 0 && (
+                                {cart.items.length === 0 && (
                                     <>
                                         <tr>
                                             <th colSpan={5}>
@@ -75,22 +85,22 @@ function Cart(props) {
                                     </>
                                 )}
 
-                                {cartCtx.items.map((item) => (
+                                {cart.items.map((item) => (
                                     <CartItem
                                         key={item.id}
                                         title={item.title}
                                         img={item.img}
                                         price={item.price}
-                                        quantity={item.quantity}
-                                        totalAmount={item.totalAmount}
+                                        quantity={item.qty}
+                                        totalAmount={item.subTotal}
                                         onRemoveWhole={removeWholeItem.bind(
                                             null,
-                                            item.id
+                                            item
                                         )}
                                         onAdd={addItemHandler.bind(null, item)}
                                         onRemove={removeFromCartHandler.bind(
                                             null,
-                                            item.id
+                                            item
                                         )}
                                     />
                                 ))}
@@ -136,7 +146,7 @@ function Cart(props) {
                                         Subtotal
                                     </h6>
                                     <h6 className="font-weight-medium">
-                                        ${cartCtx.totalPrice.toFixed(2)}
+                                        ${cart.totalPrice.toFixed(2)}
                                     </h6>
                                 </div>
                                 <div className="d-flex justify-content-between">
@@ -154,17 +164,16 @@ function Cart(props) {
                                     <h5 className="font-weight-bold">
                                         $
                                         {(
-                                            cartCtx.totalPrice + shippingCharge
+                                            cart.totalPrice + shippingCharge
                                         ).toFixed(2)}
                                     </h5>
                                 </div>
                                 <Link
                                     to={"/checkout"}
-                                    className={`btn btn-block btn-primary my-3 py-3 ${
-                                        cartCtx.items.length > 0
-                                            ? ""
-                                            : "disabled"
-                                    } `}
+                                    className={`btn btn-block btn-primary my-3 py-3 ${cart.items.length > 0
+                                        ? ""
+                                        : "disabled"
+                                        } `}
                                 >
                                     Proceed To Checkout
                                 </Link>

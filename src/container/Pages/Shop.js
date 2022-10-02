@@ -1,29 +1,59 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getCategoriesData } from "../../redux/actions/categoryUser";
+import { fetchProductsData } from "../../redux/actions/productsAction";
 import ProductItem from "../ProductItem";
+import Loader from "../UI/Loader/Loader";
 import Pagination from "../UI/Pagination";
 
 const sortData = (data, type) => {
     return data.sort((a, b) => {
         if (type === "asc") {
-            return a.price > b.price ? 1 : -1;
+            return +a.price > +b.price ? 1 : -1;
         } else if (type === "desc") {
-            return a.price < b.price ? 1 : -1;
+            return +a.price < +b.price ? 1 : -1;
+        } else {
+            return 0
         }
     });
 };
 
 function Shop(props) {
-    const [productData, setProductData] = useState(props.products);
+    const [productData, setProductData] = useState([]);
     const [sortProduct, setSortProduct] = useState("false");
-    const [itemsPerPage] = useState(3);
+    const [selectedCategory, setSelectedCategory] = useState("")
+    const [itemsPerPage] = useState(9);
     const [pageNumber, setPageNumber] = useState(1);
+    const { products, loading, error } = useSelector(state => state.productReducer)
+    const { categories } = useSelector(state => state.categoryUserReducer)
+    const cart = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
 
-    document.title = "E-shopper-Shop";
+    console.log("items", cart);
+    useEffect(() => {
+        document.title = "E-shopper-Shop";
+    }, [])
+    useEffect(() => {
+        if (!products.length) {
+            dispatch(fetchProductsData())
+        }
+        if (products.length) {
+            setProductData(products)
+        }
+        if (!categories.length) {
+            dispatch(getCategoriesData())
+        }
+        if (selectedCategory) {
+            setProductData(products.filter(item => item.categoryId === selectedCategory))
+        }
+    }, [products, dispatch, categories, selectedCategory])
+
 
     const searchHandler = (event) => {
         const enteredValue = event.target.value;
-        const searchedData = props.products.filter(
+        const searchedData = products.filter(
             (item) =>
                 item.name.toLowerCase().includes(enteredValue.toLowerCase()) ||
                 item.price.toString().includes(enteredValue)
@@ -64,6 +94,10 @@ function Shop(props) {
                 : prevState;
         });
     };
+
+    const handleChangeCategory = e => {
+        setSelectedCategory(e.target.value)
+    }
 
     return (
         <>
@@ -211,7 +245,27 @@ function Shop(props) {
                                             </div>
                                         </div>
                                         <select
+                                            id="category"
+                                            className="shop-dropdown"
+                                            name="category"
+                                            defaultValue={""}
+                                            onChange={handleChangeCategory}
+                                        >
+                                            <option value="">
+                                                All Categories
+                                            </option>
+                                            {categories.map(item => {
+                                                return (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
+                                                    </option>
+                                                )
+                                            })}
+
+                                        </select>
+                                        <select
                                             id="sort"
+                                            className="shop-dropdown"
                                             name="sort"
                                             defaultValue={""}
                                             onChange={sortHandler}
@@ -229,16 +283,27 @@ function Shop(props) {
                                     </form>
                                 </div>
                             </div>
-                            {currentItems.map((product) => (
-                                <ProductItem
-                                    key={product.id}
-                                    id={product.id}
-                                    img={product.img}
-                                    name={product.name}
-                                    price={product.price}
-                                    subPrice={product.subPrice}
-                                />
-                            ))}
+                            {loading ? (
+                                <Loader />
+                            ) : (
+                                error ? (
+                                    <p className="error-message">{error}</p>
+                                ) : (
+                                    <>
+                                        {currentItems.map((product) => (
+                                            <ProductItem
+                                                key={product.id}
+                                                id={product.id}
+                                                img={product.image}
+                                                name={product.name}
+                                                price={product.price}
+                                                subPrice={product.subPrice || 200}
+                                            />
+                                        ))}
+                                    </>
+                                )
+                            )}
+
                             <div className="col-12 pb-1">
                                 <Pagination
                                     totalItems={sortedProducts.length}

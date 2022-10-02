@@ -4,13 +4,15 @@ import productReducerAdm from "./Admin/productReducer";
 import authReducer from "./authReducer";
 import categoryUserReducer from "./categoryReducerUser";
 import productReducer from "./productReducer"
+import cartReducer from "./cartReducer"
 
 const rootReducer = combineReducers({
   auth: authReducer,
   category: categoryReducer,
   categoryUserReducer,
   productReducerAdm,
-  productReducer
+  productReducer,
+  cartReducer
 })
 
 export default rootReducer;

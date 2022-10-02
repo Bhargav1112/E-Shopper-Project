@@ -9993,9 +9993,9 @@ a.text-dark:focus {
         transform: translateY(-15px);
     }
 }
-#sort {
+.shop-dropdown {
     outline: none;
-    width: 100px;
+    width: auto;
     border: none;
     background-color: var(--primary);
     padding: 0 0.875rem;

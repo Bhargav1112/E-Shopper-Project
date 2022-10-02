@@ -7,6 +7,7 @@ import CartContext from "../store/cart-context";
 function Header(props) {
 	const cartCtx = useContext(CartContext);
 	const auth = useSelector(state => state.auth)
+	const cart = useSelector(state => state.cartReducer)
 	const dispatch = useDispatch()
 	const onLogoutHandler = () => {
 		dispatch(signOutAction())
@@ -85,7 +86,7 @@ function Header(props) {
 						<Link to={"/cart"} className="btn border">
 							<i className="fas fa-shopping-cart text-primary" />
 							<span className="badge">
-								{cartCtx.totalQuantity}
+								{cart.totalQty}
 							</span>
 						</Link>
 					</div>
@@ -121,24 +122,22 @@ function Header(props) {
 								<div className="navbar-nav mr-auto py-0">
 									<NavLink
 										to="/"
-										className="nav-item nav-link active"
+										exact
+										className="nav-item nav-link "
+										activeClassName="active"
 									>
 										Home
 									</NavLink>
 									<NavLink
 										to="/shop"
+										activeClassName="active"
 										className="nav-item nav-link"
 									>
 										Shop
 									</NavLink>
 									<NavLink
-										to="/detail"
-										className="nav-item nav-link"
-									>
-										Shop Detail
-									</NavLink>
-									<NavLink
 										to="/contact"
+										activeClassName="active"
 										className=" nav-item nav-link"
 									>
 										Contact
@@ -149,6 +148,7 @@ function Header(props) {
 										<NavLink
 											to={"/login"}
 											className="nav-item nav-link"
+											activeClassName="active"
 										>
 											Login
 										</NavLink>
