@@ -1,11 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { NavLink } from "react-router-dom";
 import CartContext from "../../store/cart-context";
+import { db } from "../../firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { putCartItem } from "../../common/cartServices";
 
 function Checkout(props) {
-    document.title = "E-shopper-Checkout";
+    const userinfo = localStorage.getItem("loggedInUser")
+    const cart = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        document.title = "E-shopper-Checkout";
+    }, [])
+
+    const placeOrderHandler = async (values, action) => {
+        const orderData = {
+            ...cart,
+            user: JSON.parse(userinfo),
+            shippingDetails: values
+        }
+        await addDoc(collection(db, "orders"), orderData);
+        await putCartItem({ items: [], totalPrice: 0, totalQty: 0, user: userinfo ? JSON.parse(userinfo).uid : null })
+        dispatch({ type: "CLEAR_CART" })
+        action.reset()
+    }
 
     const ctx = useContext(CartContext);
 
@@ -41,10 +63,7 @@ function Checkout(props) {
                 zip: "",
             },
             validationSchema: schema,
-            onSubmit: (value, action) => {
-                alert(JSON.stringify(value));
-                action.resetForm();
-            },
+            onSubmit: placeOrderHandler,
         });
 
     const shippingCharge = 10;
@@ -273,11 +292,11 @@ function Checkout(props) {
                                 <h5 className="font-weight-medium mb-3">
                                     Products
                                 </h5>
-                                {ctx.items.map((item) => (
+                                {cart.items.map((item) => (
                                     <div className="d-flex justify-content-between">
-                                        <p>{item.title}</p>
-                                        <p>Qty : {item.quantity}</p>
-                                        <p>${item.totalAmount}</p>
+                                        <p style={{ maxWidth: "150px" }}>{item.title}</p>
+                                        <p style={{ maxWidth: "50px" }}>Qty : {item.qty}</p>
+                                        <p style={{ maxWidth: "100px" }}>&#8377;{item.subTotal}</p>
                                     </div>
                                 ))}
                                 <hr className="mt-0" />
@@ -286,7 +305,7 @@ function Checkout(props) {
                                         Subtotal
                                     </h6>
                                     <h6 className="font-weight-medium">
-                                        ${ctx.totalPrice}
+                                        &#8377;{cart.totalPrice}
                                     </h6>
                                 </div>
                                 <div className="d-flex justify-content-between">
@@ -294,7 +313,7 @@ function Checkout(props) {
                                         Shipping
                                     </h6>
                                     <h6 className="font-weight-medium">
-                                        ${shippingCharge}
+                                        &#8377;{shippingCharge}
                                     </h6>
                                 </div>
                             </div>
@@ -302,7 +321,7 @@ function Checkout(props) {
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5 className="font-weight-bold">Total</h5>
                                     <h5 className="font-weight-bold">
-                                        ${ctx.totalPrice + shippingCharge}
+                                        &#8377;{cart.totalPrice + shippingCharge}
                                     </h5>
                                 </div>
                             </div>

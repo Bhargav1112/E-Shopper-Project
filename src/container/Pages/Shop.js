@@ -28,10 +28,8 @@ function Shop(props) {
     const [pageNumber, setPageNumber] = useState(1);
     const { products, loading, error } = useSelector(state => state.productReducer)
     const { categories } = useSelector(state => state.categoryUserReducer)
-    const cart = useSelector(state => state.cartReducer)
     const dispatch = useDispatch()
 
-    console.log("items", cart);
     useEffect(() => {
         document.title = "E-shopper-Shop";
     }, [])

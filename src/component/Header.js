@@ -5,13 +5,13 @@ import { signOutAction } from "../redux/actions/authAction";
 import CartContext from "../store/cart-context";
 
 function Header(props) {
-	const cartCtx = useContext(CartContext);
 	const auth = useSelector(state => state.auth)
 	const cart = useSelector(state => state.cartReducer)
 	const dispatch = useDispatch()
 	const onLogoutHandler = () => {
 		dispatch(signOutAction())
 	}
+
 	return (
 		<header>
 			<div className="container-fluid">

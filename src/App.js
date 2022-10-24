@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 
 import Header from "./component/Header";
@@ -15,9 +15,29 @@ import PrivateRoute from "./routes/PrivateRoute";
 import CartContextProvider from "./store/cart-context-provider";
 import NotFoundPage from "./container/UI/NotFoundPage";
 import AdminHome from "./Admin/components/AdminHome";
+import { useDispatch, useSelector } from "react-redux";
+import { putCartItem } from "./common/cartServices";
+import { fetchCartData } from "./redux/actions/cartAction";
 
 function App() {
     const location = useLocation()
+    const userInfo = localStorage.getItem("loggedInUser")
+    const cart = useSelector(state => state.cartReducer)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const sendCart = async () => {
+            const res = await putCartItem({ ...cart, user: userInfo ? JSON.parse(userInfo).uid : null })
+        }
+        if (cart.items.length) {
+            sendCart()
+        }
+    }, [cart, userInfo])
+
+    useEffect(() => {
+        dispatch(fetchCartData())
+    }, [dispatch])
+
     return (
         <>
             {
@@ -28,7 +48,7 @@ function App() {
                         </PrivateRoute>
                     </Switch>
                 ) : (
-                    <CartContextProvider>
+                    <>
                         <Header />
                         <main>
                             <Switch>
@@ -59,7 +79,8 @@ function App() {
                             </Switch>
                         </main>
                         <Footer />
-                    </CartContextProvider>
+                    </>
+
                 )
             }
         </>

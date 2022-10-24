@@ -10,9 +10,8 @@ import { fetchProductsData } from "../redux/actions/productsAction";
 function Home(props) {
 	const dispatch = useDispatch()
 	const { loading, categories, error } = useSelector(state => state.categoryUserReducer)
-	console.log("categories", categories);
+
 	const { products, loading: loadingProduct, error: errorProduct } = useSelector(state => state.productReducer)
-	console.log(products);
 
 	useEffect(() => {
 		document.title = "E-shopper-Home";
@@ -434,7 +433,7 @@ function Home(props) {
 							<ProductItem
 								key={product.id}
 								id={product.id}
-								img={product.img}
+								img={product.image}
 								name={product.name}
 								price={product.price}
 								subPrice={product.subPrice}

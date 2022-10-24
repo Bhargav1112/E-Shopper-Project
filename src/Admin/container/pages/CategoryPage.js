@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoryAction, removeCategoryAction } from '../../../redux/actions/Admin/categoryAction';
 import Loader from '../../../container/UI/Loader/Loader';
+import { getOrderAdmin } from '../../../redux/actions/Admin/orederAction';
 
 const CategoryPage = (props) => {
   const [showAddCategory, setShowAddCategory] = useState(false)

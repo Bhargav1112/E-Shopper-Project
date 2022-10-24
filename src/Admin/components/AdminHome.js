@@ -20,6 +20,7 @@ import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import CategoryPage from '../container/pages/CategoryPage';
 import ProductsPage from '../container/pages/ProductsPage';
 import { Button } from '@mui/material';
+import OrderPage from '../container/pages/OrderPage';
 
 const drawerWidth = 240;
 
@@ -108,6 +109,7 @@ export default function AdminHome(props) {
   const menuItems = [
     { lable: "Category", to: "/admin/category", icon: <InboxIcon /> },
     { lable: "Products", to: "/admin/product", icon: <InboxIcon /> },
+    { lable: "Orders", to: "/admin/order", icon: <InboxIcon /> },
   ]
 
   return (
@@ -185,6 +187,9 @@ export default function AdminHome(props) {
           </Route>
           <Route path={"/admin/product"} exact>
             <ProductsPage />
+          </Route>
+          <Route path={"/admin/order"} exact>
+            <OrderPage />
           </Route>
         </Switch>
       </Box>

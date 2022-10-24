@@ -13,6 +13,7 @@ export const signUpAction = data => {
       const token = user.accessToken
       await sendEmailVerification(auth.currentUser)
       localStorage.setItem('user', token)
+      localStorage.setItem('loggedInUser', JSON.stringify(user))
       history.replace("/")
       dispatch({ type: ActionType.SIGNUP, payload: { user, token } })
     } catch (error) {
@@ -33,6 +34,7 @@ export const signInAction = data => {
 
       if (user.emailVerified) {
         localStorage.setItem('user', token)
+        localStorage.setItem('loggedInUser', JSON.stringify(user))
         history.replace("/")
         dispatch({ type: ActionType.SIGNIN, payload: { user, token } })
       } else {
@@ -68,6 +70,7 @@ export const googleSigninAction = () => {
         const token = credential.accessToken;
         const user = result.user;
         localStorage.setItem('user', token)
+        localStorage.setItem('loggedInUser', JSON.stringify(user))
         history.replace("/")
         dispatch({ type: ActionType.SIGNIN, payload: { user, token } })
       }).catch((error) => {

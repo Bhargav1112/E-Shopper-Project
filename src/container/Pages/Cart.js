@@ -1,20 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { addCartData, deleteCartData, removeCartData } from "../../redux/actions/cartAction";
-import CartContext from "../../store/cart-context";
-import { isLoggedIn } from "../../utils";
+import { Link } from "react-router-dom";
+import { addCartData, deleteCartData, fetchCartData, removeCartData } from "../../redux/actions/cartAction";
 import CartItem from "../cart/CartItem";
 
 function Cart(props) {
-    const cartCtx = useContext(CartContext);
+    const userInfo = localStorage.getItem("loggedInUser")
     const cart = useSelector(state => state.cartReducer)
     const dispatch = useDispatch()
 
     useEffect(() => {
         document.title = "E-shopper-Cart";
-    }, [])
+    }, [dispatch])
 
     const addItemHandler = (item) => {
         // cartCtx.onAddItem({ ...item, quantity: 1 });
@@ -104,7 +102,7 @@ function Cart(props) {
                                         )}
                                     />
                                 ))}
-                                {cartCtx.items.length > 0 && (
+                                {cart.items.length > 0 && (
                                     <tr>
                                         <th colSpan={5}>
                                             <Link
@@ -146,7 +144,7 @@ function Cart(props) {
                                         Subtotal
                                     </h6>
                                     <h6 className="font-weight-medium">
-                                        ${cart.totalPrice.toFixed(2)}
+                                        &#8377;{cart.totalPrice.toFixed(2)}
                                     </h6>
                                 </div>
                                 <div className="d-flex justify-content-between">
@@ -154,7 +152,7 @@ function Cart(props) {
                                         Shipping
                                     </h6>
                                     <h6 className="font-weight-medium">
-                                        ${shippingCharge}
+                                        &#8377;{shippingCharge}
                                     </h6>
                                 </div>
                             </div>

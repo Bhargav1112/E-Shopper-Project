@@ -49,9 +49,9 @@ function ProductItem(props) {
                 <div className="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 className="text-truncate mb-3">{name}</h6>
                     <div className="d-flex justify-content-center">
-                        <h6>${price}</h6>
+                        <h6>&#8377;{price}</h6>
                         <h6 className="text-muted ml-2">
-                            <del>${subPrice}</del>
+                            <del>&#8377;{subPrice}</del>
                         </h6>
                     </div>
                 </div>
