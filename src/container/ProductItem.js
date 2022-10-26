@@ -32,7 +32,6 @@ function ProductItem(props) {
             qty: 1,
             subTotal: +price
         }
-
         dispatch(addCartData(data))
     };
 

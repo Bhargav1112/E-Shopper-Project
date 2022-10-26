@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,12 +6,17 @@ import { addCartData, deleteCartData, fetchCartData, removeCartData } from "../.
 import CartItem from "../cart/CartItem";
 
 function Cart(props) {
-    const userInfo = localStorage.getItem("loggedInUser")
-    const cart = useSelector(state => state.cartReducer)
+    const userInfo = useMemo(() => localStorage.getItem("loggedInUser"), [])
+    const cartData = useSelector(state => state.cartReducer)
     const dispatch = useDispatch()
+    const cart = useMemo(() => {
+        return cartData.user === JSON.parse(userInfo)?.uid ? cartData : { items: [], totalQty: 0, totalPrice: 0, user: JSON.parse(userInfo)?.uid }
+    }, [cartData, userInfo])
+    console.log("cart", cart);
 
     useEffect(() => {
         document.title = "E-shopper-Cart";
+        dispatch(fetchCartData())
     }, [dispatch])
 
     const addItemHandler = (item) => {

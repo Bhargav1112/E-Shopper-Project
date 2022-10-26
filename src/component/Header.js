@@ -1,15 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import { signOutAction } from "../redux/actions/authAction";
+import { fetchCartData } from "../redux/actions/cartAction";
 import CartContext from "../store/cart-context";
 
 function Header(props) {
+	const userInfo = localStorage.getItem("loggedInUser")
 	const auth = useSelector(state => state.auth)
-	const cart = useSelector(state => state.cartReducer)
 	const dispatch = useDispatch()
+	const cartData = useSelector(state => state.cartReducer)
+	const cart = useMemo(() => {
+		return cartData.user === JSON.parse(userInfo)?.uid ? cartData : { items: [], totalQty: 0, totalPrice: 0, user: JSON.parse(userInfo)?.uid }
+	}, [cartData, userInfo])
+
+	console.log("cartData", cartData);
+
 	const onLogoutHandler = () => {
 		dispatch(signOutAction())
+		dispatch(fetchCartData())
 	}
 
 	return (

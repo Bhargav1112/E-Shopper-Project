@@ -13,67 +13,67 @@ const OrderPage = () => {
     dispatch(getOrderAdmin())
   }, [dispatch])
 
-  const columns = useMemo(() => {
-    return [
-      {
-        field: 'serialNumber',
-        headerName: 'Sr. no.',
-        width: 70,
-        editable: true,
-      },
-      {
-        field: 'name',
-        headerName: 'Product name',
-        width: 400,
-        editable: true,
-      },
-      {
-        field: 'image',
-        headerName: 'Image',
-        width: 200,
-        renderCell: params => <img src={params.row.image} style={{ width: 50, height: 50 }} alt=" of good" />
-      },
-      {
-        field: 'price',
-        headerName: 'Price',
-        width: 100,
-        editable: true,
-      },
-      {
-        field: 'qty',
-        headerName: 'Quantity',
-        width: 100,
-        editable: true,
-      },
-      {
-        field: 'user',
-        headerName: 'Person Name',
-        width: 300,
-        editable: true,
-      },
-    ];
-  }, [])
+  const columns = [
+    {
+      field: 'serialNumber',
+      headerName: 'Sr. no.',
+      width: 70,
+      editable: true,
+    },
+    {
+      field: 'name',
+      headerName: 'Product name',
+      width: 400,
+      editable: true,
+    },
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 200,
+      renderCell: params => <img src={params.row.image} style={{ width: 50, height: 50 }} alt=" of good" />
+    },
+    {
+      field: 'price',
+      headerName: 'Price',
+      width: 100,
+      editable: true,
+    },
+    {
+      field: 'qty',
+      headerName: 'Quantity',
+      width: 100,
+      editable: true,
+    },
+    {
+      field: 'user',
+      headerName: 'Person Name',
+      width: 300,
+      editable: true,
+    },
+  ]
 
-  const rows = order.flatMap(item => {
-    return item.items.map((data, i) => {
-      return {
-        orderId: item.id,
-        id: data.id,
-        name: data.title,
-        image: data.img,
-        price: data.price,
-        qty: data.qty,
-        user: item.user.displayName,
-        userEmail: item.user.email
-      }
+  const rows = useMemo(() => {
+    return order.flatMap(item => {
+      return item.items.map((data, i) => {
+        return {
+          orderId: item.id,
+          id: data.id,
+          name: data.title,
+          image: data.img,
+          price: data.price,
+          qty: data.qty,
+          user: item.user.displayName,
+          userEmail: item.user.email
+        }
+      })
     })
-  })
+  }, [order])
 
 
   const rowsData = rows.map((item, i) => {
     return {
-      serialNumber: i + 1,
       ...item,
+      serialNumber: i + 1,
     }
   })
   console.log("rowsData", rowsData);

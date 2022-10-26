@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Route, Switch, useLocation } from "react-router-dom";
 
 import Header from "./component/Header";
@@ -21,18 +21,25 @@ import { fetchCartData } from "./redux/actions/cartAction";
 
 function App() {
     const location = useLocation()
-    const userInfo = localStorage.getItem("loggedInUser")
-    const cart = useSelector(state => state.cartReducer)
+    const userInfo = useMemo(() => localStorage.getItem("loggedInUser"), [])
+    const cartData = useSelector(state => state.cartReducer)
     const dispatch = useDispatch()
+    const cart = useMemo(() => {
+        return cartData.user === JSON.parse(userInfo)?.uid ? cartData : { items: [], totalQty: 0, totalPrice: 0, user: JSON.parse(userInfo)?.uid }
+    }, [cartData, userInfo])
+
+    console.log("condition", cartData);
 
     useEffect(() => {
         const sendCart = async () => {
+            console.log(cart.items.length);
             const res = await putCartItem({ ...cart, user: userInfo ? JSON.parse(userInfo).uid : null })
         }
-        if (cart.items.length) {
+        if (cart.items.length && userInfo) {
             sendCart()
         }
     }, [cart, userInfo])
+
 
     useEffect(() => {
         dispatch(fetchCartData())

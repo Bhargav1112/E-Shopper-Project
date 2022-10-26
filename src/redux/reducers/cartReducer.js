@@ -3,7 +3,8 @@ import * as ActionType from "../actionTypes"
 const initialState = {
   items: [],
   totalQty: 0,
-  totalPrice: 0
+  totalPrice: 0,
+  user: JSON.parse(localStorage.getItem("loggedInUser"))?.uid
 }
 
 const cartReducer = (state = initialState, action) => {
@@ -30,7 +31,7 @@ const cartReducer = (state = initialState, action) => {
           }
         }) : state.items.concat(action.payload),
         totalQty: state.totalQty + +action.payload.qty,
-        totalPrice: state.totalPrice + +action.payload.price
+        totalPrice: state.totalPrice + +action.payload.price,
       }
     case ActionType.REMOVE_CART_ITEM:
       return {
@@ -50,7 +51,6 @@ const cartReducer = (state = initialState, action) => {
         totalQty: state.totalQty - 1
       }
     case ActionType.DELETE_CART_ITEM:
-      console.log("action.payload", action.payload);
       return {
         ...state,
         items: state.items.filter(item => item.id !== action.payload.id),

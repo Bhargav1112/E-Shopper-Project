@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesData } from "../redux/actions/categoryUser";
 import Loader from "./UI/Loader/Loader";
 import { fetchProductsData } from "../redux/actions/productsAction";
+import { fetchCartData } from "../redux/actions/cartAction";
 
 function Home(props) {
 	const dispatch = useDispatch()
@@ -22,6 +23,11 @@ function Home(props) {
 			dispatch(fetchProductsData())
 		}
 	}, [dispatch, products, categories])
+
+	useEffect(() => {
+		dispatch(fetchCartData())
+	}, [dispatch])
+
 	return (
 		<>
 			<div
