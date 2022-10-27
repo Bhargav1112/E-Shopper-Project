@@ -16,3 +16,11 @@ code {
   font-size: 14px;
   color: red;
 }
+
+.admActive{
+  color: #d19c97;
+}
+
+.admActive svg{
+  fill: #d19c97;
+}

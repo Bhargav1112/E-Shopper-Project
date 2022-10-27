@@ -16,11 +16,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import { Link, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, NavLink, Route, Switch, useHistory } from 'react-router-dom';
 import CategoryPage from '../container/pages/CategoryPage';
 import ProductsPage from '../container/pages/ProductsPage';
 import { Button } from '@mui/material';
 import OrderPage from '../container/pages/OrderPage';
+import CategoryIcon from '@mui/icons-material/Category';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 const drawerWidth = 240;
 
@@ -107,9 +110,9 @@ export default function AdminHome(props) {
   };
 
   const menuItems = [
-    { lable: "Category", to: "/admin/category", icon: <InboxIcon /> },
-    { lable: "Products", to: "/admin/product", icon: <InboxIcon /> },
-    { lable: "Orders", to: "/admin/order", icon: <InboxIcon /> },
+    { lable: "Category", to: "/admin/category", icon: <CategoryIcon /> },
+    { lable: "Products", to: "/admin/product", icon: <Inventory2Icon /> },
+    { lable: "Orders", to: "/admin/order", icon: <LocalMallIcon /> },
   ]
 
   return (
@@ -156,7 +159,7 @@ export default function AdminHome(props) {
         <Divider />
         <List>
           {menuItems.map((item, index) => (
-            <Link to={item.to} key={index} disablePadding sx={{ display: 'block' }}>
+            <NavLink to={item.to} key={index} activeClassName={"admActive"} disablePadding >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -175,7 +178,7 @@ export default function AdminHome(props) {
                 </ListItemIcon>
                 <ListItemText primary={item.lable} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
-            </Link>
+            </NavLink>
           ))}
         </List>
       </Drawer>

@@ -15,12 +15,6 @@ const OrderPage = () => {
 
   const columns = [
     {
-      field: 'serialNumber',
-      headerName: 'Sr. no.',
-      width: 70,
-      editable: true,
-    },
-    {
       field: 'name',
       headerName: 'Product name',
       width: 400,
@@ -52,7 +46,7 @@ const OrderPage = () => {
     },
   ]
 
-  const rows = useMemo(() => {
+  const rowsData = useMemo(() => {
     return order.flatMap(item => {
       return item.items.map((data, i) => {
         return {
@@ -68,15 +62,6 @@ const OrderPage = () => {
       })
     })
   }, [order])
-
-
-  const rowsData = rows.map((item, i) => {
-    return {
-      ...item,
-      serialNumber: i + 1,
-    }
-  })
-  console.log("rowsData", rowsData);
 
   return (
     <>
